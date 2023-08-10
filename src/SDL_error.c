@@ -51,10 +51,10 @@ int SDL_SetError(SDL_PRINTF_FORMAT_STRING const char *fmt, ...)
             }
         }
 
-        if (SDL_LogGetPriority(SDL_LOG_CATEGORY_ERROR) <= SDL_LOG_PRIORITY_DEBUG) {
-            /* If we are in debug mode, print out the error message */
-            SDL_LogDebug(SDL_LOG_CATEGORY_ERROR, "%s", error->str);
-        }
+
+        // # HACK(SerenityOS): show everything that's going on
+        dbgputstr(error->str, strlen(error->str));
+        dbgputstr("\n", 1);
     }
 
     return -1;
