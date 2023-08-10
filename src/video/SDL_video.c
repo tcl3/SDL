@@ -138,6 +138,9 @@ static VideoBootStrap *bootstrap[] = {
 #if SDL_VIDEO_DRIVER_OFFSCREEN
     &OFFSCREEN_bootstrap,
 #endif
+#if SDL_VIDEO_DRIVER_SERENITY
+    &SERENITYVIDEO_bootstrap,
+#endif
 #if SDL_VIDEO_DRIVER_DUMMY
     &DUMMY_bootstrap,
 #if SDL_INPUT_LINUXEV
@@ -4240,6 +4243,10 @@ void SDL_WM_SetIcon(SDL_Surface * icon, Uint8 * mask)
     }
 }
 #endif
+#if SDL_VIDEO_DRIVER_SERENITY
+#include "serenity/SDL_serenitymessagebox.h"
+#endif
+
 
 SDL_bool SDL_GetWindowWMInfo(SDL_Window * window, struct SDL_SysWMinfo *info)
 {
@@ -4520,6 +4527,12 @@ int SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid)
 #if SDL_VIDEO_DRIVER_VITA
     if (retval == -1 &&
         VITA_ShowMessageBox(messageboxdata, buttonid) == 0) {
+        retval = 0;
+    }
+#endif
+#if SDL_VIDEO_DRIVER_SERENITY
+    if (retval == -1 &&
+        SERENITY_ShowMessageBox(messageboxdata, buttonid) == 0) {
         retval = 0;
     }
 #endif
